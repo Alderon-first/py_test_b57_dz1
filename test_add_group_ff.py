@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
-from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
+import unittest
 from selenium.webdriver.firefox.options import Options
 
 
@@ -56,7 +52,6 @@ class UntitledTestCase(unittest.TestCase):
         except NoAlertPresentException as e:
             return False
         return True
-
 
     def tearDown(self):
         self.wd.quit()
