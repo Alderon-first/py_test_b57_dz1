@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
+# from selenium.webdriver.chrome.webdriver import WebDriver - для хрома
 import unittest
 from selenium.webdriver.firefox.options import Options
 from group import Group
@@ -7,6 +8,7 @@ from group import Group
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
+        # self.wd = WebDriver() - для хрома
         options = Options()
         options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
         self.wd = webdriver.Firefox(executable_path=r'C:\Windows\System32\geckodriver.exe', options=options)
