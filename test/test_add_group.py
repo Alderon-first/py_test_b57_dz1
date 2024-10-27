@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from group import Group
-from application import Application
+from мodel.group import Group
+from fixture.application import Application
 import pytest
 
 
@@ -17,7 +17,7 @@ def test_add_group(app):
     app.logout()
 
 
-def test_empty_group(self):
+def test_empty_group(app):
     app.login(username="admin", password="secret")
     app.create_group(Group(name="", header="", footer=""))
     app.logout()
