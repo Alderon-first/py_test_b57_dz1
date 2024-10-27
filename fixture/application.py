@@ -2,6 +2,7 @@ from selenium import webdriver
 # from selenium.webdriver.chrome.webdriver import WebDriver - для хрома
 import unittest
 from selenium.webdriver.firefox.options import Options
+from fixture.sesion import SessionHelper
 
 
 class Application:
@@ -11,11 +12,7 @@ class Application:
         options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
         self.wd = webdriver.Firefox(executable_path=r'C:\Windows\System32\geckodriver.exe', options=options)
         self.wd.implicitly_wait(30)
-
-    def logout(self):
-        # logout
-        wd = self.wd
-        wd.find_element_by_link_text("Logout").click()
+        self.session = SessionHelper(self)
 
     def create_group(self, group):
         wd = self.wd
@@ -43,16 +40,6 @@ class Application:
     def return_to_groups_page(self):
         wd = self.wd
         wd.find_element_by_link_text("group page").click()
-
-    def login(self, username, password):
-        wd = self.wd
-        self.open_home_page()
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath("//input[@value='Login']").click()
 
     def open_home_page(self):
         wd = self.wd
