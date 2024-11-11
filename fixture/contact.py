@@ -11,26 +11,27 @@ class ContactHelper:
         wd = self.app.wd
         # init group creation
         wd.find_element_by_link_text("add new").click()
-        # fill group form
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.first_name)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(contact.last_name)
-        wd.find_element_by_name("address").click()
-        wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(contact.address)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("mobile").click()
-        wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys(contact.phone_m)
-        wd.find_element_by_name("email").click()
-        wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(contact.email)
+        self.fill_contact_form(contact)
         # submit group form
         wd.find_element_by_xpath("//div[@id='content']/form/input[20]").click()
         self.return_to_home_page()
+
+    def fill_contact_form(self, contact):
+        # fill group form
+        wd = self.app.wd
+        self.up_field_value("firstname", contact.first_name)
+        self.up_field_value("lastname", contact.last_name)
+        self.up_field_value("address", contact.address)
+        wd.find_element_by_name("home").click()
+        self.up_field_value("mobile", contact.phone_m)
+        self.up_field_value("email", contact.email)
+
+    def up_field_value(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
 
     def dell_first(self):
         wd = self.app.wd
@@ -45,23 +46,7 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         # изменить выбранную
         wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
-        # fill contact form
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.first_name)
-        wd.find_element_by_name("lastname").click()
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys(contact.last_name)
-        wd.find_element_by_name("address").click()
-        wd.find_element_by_name("address").clear()
-        wd.find_element_by_name("address").send_keys(contact.address)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("mobile").click()
-        wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys(contact.phone_m)
-        wd.find_element_by_name("email").click()
-        wd.find_element_by_name("email").clear()
-        wd.find_element_by_name("email").send_keys(contact.email)
+        self.fill_contact_form(contact)
         # submit contact update
         wd.find_element_by_xpath("//*[@id='content']/form[1]/input[21]").click()
         self.return_to_home_page()

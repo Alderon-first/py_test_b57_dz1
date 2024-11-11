@@ -9,3 +9,7 @@ def test_update_contact(app):
     app.session.logout()
 
 
+def test_update_contact_first_name(app):
+    app.session.login(username="admin", password="secret")
+    app.contact.update_first(Contact(first_name="Капитолина"))
+    app.session.logout()
