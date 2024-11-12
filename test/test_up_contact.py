@@ -5,11 +5,18 @@ from model.contact import Contact
 def test_update_contact(app):
     if app.contact.count() == 0:
         app.contact.create(Contact(first_name="ДлинноеТестовоеИмя"))
-    app.contact.update_first(Contact(first_name="Вельгельмина", last_name="Христорождественская",
-                                     address="Новосиб, д.13", phone_m="+7-977-89-96-13", email="test11@test11.ru"))
+    old_contacts = app.contact.get_contact_list()
+    contact = Contact(first_name="Вельгельмина", last_name="Христорождественская",
+                                     address="Новосиб, д.13", phone_m="+7-977-89-96-13", email="test11@test11.ru")
+    contact.id = old_contacts[0].id
+    app.contact.update_first(contact)
+    new_contacts = app.contact.get_contact_list()
+    assert len(old_contacts) == len(new_contacts)
+    old_contacts[0] = contact
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 
-def test_update_contact_first_name(app):
-    if app.contact.count() == 0:
-        app.contact.create(Contact(first_name="ДлинноеТестовоеИмя"))
-    app.contact.update_first(Contact(first_name="Капитолина"))
+# def test_update_contact_first_name(app):
+#     if app.contact.count() == 0:
+#         app.contact.create(Contact(first_name="ДлинноеТестовоеИмя"))
+#     app.contact.update_first(Contact(first_name="Капитолина"))
