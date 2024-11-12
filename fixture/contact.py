@@ -1,5 +1,5 @@
 class ContactHelper:
-
+    # класс ContactHelper предназначен операций с сущностью "контакт": методов создания, удаления и тд
     def __init__(self, app):
         self.app = app
 

@@ -1,5 +1,6 @@
 class SessionHelper:
-
+    # класс SessionHelper предназначен операций с сессией после ее создания через Application: логин/логаут,
+    # проверка статуса
     def __init__(self, app):
         self.app = app
 
@@ -33,7 +34,7 @@ class SessionHelper:
     def logout(self):
         wd = self.app.wd
         wd.find_element_by_link_text("Logout").click()
-        wd.find_element_by_name("user")
+        #wd.find_element_by_name("user")
 
     def ensure_logout(self):
         if self.is_logged_in():

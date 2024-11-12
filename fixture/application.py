@@ -7,6 +7,7 @@ from fixture.contact import ContactHelper
 
 
 class Application:
+    # класс Application предназначен для создания сессии и методов взаимодействия с ней
     def __init__(self):
         # self.wd = WebDriver() - для хрома
         options = Options()
