@@ -7,7 +7,7 @@ def test_del_some_group(app):
     if app.group.count() == 0:
         app.group.create(Group(name="test"))
     old_groups = app.group.get_group_list()
-    # получить значение индекса случайным образом из диапазона, равного длинне списка
+    # получить значение индекса случайным образом из диапазона, равного длине списка
     index = randrange(len(old_groups))
     app.group.dell_by_index(index)
     assert len(old_groups)-1 == app.group.count()

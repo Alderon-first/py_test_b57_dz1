@@ -45,7 +45,6 @@ class ContactHelper:
             wd.find_element_by_name(field_name).send_keys(text)
 
     def dell_first(self):
-        wd = self.app.wd
         self.dell_by_index(0)
 
     def dell_by_index(self, index):
@@ -58,8 +57,7 @@ class ContactHelper:
         self.contact_cache = None
 
     def update_first(self, contact):
-        wd = self.app.wd
-        self.select_by_index(0, contact)
+        self.update_by_index(0, contact)
 
     def update_by_index(self, index, contact):
         wd = self.app.wd
@@ -75,7 +73,8 @@ class ContactHelper:
     def open_by_index(self, index):
         wd = self.app.wd
         print(index)
-        wd.find_elements_by_name("entry")[index].find_elements_by_tag_name("td")[7].find_element_by_tag_name("a").click()
+        wd.find_elements_by_name("entry")[index].find_elements_by_tag_name("td")[7].\
+            find_element_by_tag_name("a").click()
 
     def select_first(self):
         self.select_by_index(0)
@@ -101,5 +100,3 @@ class ContactHelper:
             id = element.find_element_by_name("selected[]").get_attribute("value")
             self.contact_cache.append(Contact(first_name=firstname, last_name=lastname, id=id))
         return list(self.contact_cache)
-
-

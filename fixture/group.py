@@ -46,7 +46,6 @@ class GroupHelper:
         self.group_cache = None
 
     def update_first(self, group):
-        wd = self.app.wd
         self.update_by_index(0, group)
 
     def update_by_index(self, index, group):
@@ -102,8 +101,3 @@ class GroupHelper:
                 self.group_cache.append(Group(name=text, id=id))
         # вернуть значение group_cache
         return list(self.group_cache)
-
-
-
-
-

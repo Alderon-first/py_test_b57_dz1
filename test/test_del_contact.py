@@ -15,4 +15,3 @@ def test_del_contact(app):
     #  вырезаем элемент c индексом index
     old_contacts[index:index+1] = []
     assert old_contacts == new_contacts
-
