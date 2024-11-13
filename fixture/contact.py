@@ -46,7 +46,6 @@ class ContactHelper:
 
     def dell_first(self):
         wd = self.app.wd
-        self.open_home_page()
         self.dell_by_index(0)
 
     def dell_by_index(self, index):
@@ -59,7 +58,6 @@ class ContactHelper:
         self.contact_cache = None
 
     def update_first(self, contact):
-        self.open_home_page()
         wd = self.app.wd
         self.select_by_index(0, contact)
 
