@@ -30,10 +30,15 @@ class GroupHelper:
             wd.find_element_by_link_text("group page").click()
 
     def dell_first(self):
+        # удалить первую группу
+        self.dell_by_index(0)
+
+    def dell_by_index(self, index):
+        # удалить произвольную группу
         wd = self.app.wd
         self.open_groups_page()
-        # select first group
-        wd.find_element_by_name("selected[]").click()
+        # select group index
+        self.select_by_index(index)
         # submit del
         wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
@@ -42,10 +47,12 @@ class GroupHelper:
 
     def update_first(self, group):
         wd = self.app.wd
+        self.update_by_index(0, group)
+
+    def update_by_index(self, index, group):
+        wd = self.app.wd
         self.open_groups_page()
-        self.select_first_group()
-        # open form update
-        wd.find_element_by_name("edit").click()
+        self.select_by_index(index)
         # fill group form
         self.fill_group_form(group)
         # submit group update
@@ -67,9 +74,12 @@ class GroupHelper:
             wd.find_element_by_name(field_name).clear()
             wd.find_element_by_name(field_name).send_keys(text)
 
-    def select_first_group(self):
+    def select_first(self):
+        self.select_by_index(0)
+
+    def select_by_index(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def count(self):
         # посчитать, сколько групп на странице
@@ -91,4 +101,8 @@ class GroupHelper:
                 self.group_cache.append(Group(name=text, id=id))
         # вернуть значение group_cache
         return list(self.group_cache)
+
+
+
+
 

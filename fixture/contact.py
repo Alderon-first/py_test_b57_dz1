@@ -45,23 +45,41 @@ class ContactHelper:
 
     def dell_first(self):
         wd = self.app.wd
-        # выбрать первую
-        wd.find_element_by_name("selected[]").click()
+        self.dell_by_index(0)
+
+    def dell_by_index(self, index):
+        wd = self.app.wd
+        # выбрать index
+        self.select_by_index(index)
         # удалить первую группу
         wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/div[2]/input").click()
         self.contact_cache = None
 
     def update_first(self, contact):
         wd = self.app.wd
-        # выбрать первую
-        wd.find_element_by_name("selected[]").click()
+        self.select_by_index(0, contact)
+
+    def update_by_index(self, index, contact):
+        wd = self.app.wd
         # изменить выбранную
-        wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
+        self.open_by_index(index)
         self.fill_contact_form(contact)
         # submit contact update
-        wd.find_element_by_xpath("//*[@id='content']/form[1]/input[21]").click()
+        wd.find_element_by_name("update").click()
         self.return_to_home_page()
         self.contact_cache = None
+
+    def open_by_index(self, index):
+        wd = self.app.wd
+        print(index)
+        wd.find_elements_by_name("entry")[index].find_elements_by_tag_name("td")[7].find_element_by_tag_name("a").click()
+
+    def select_first(self):
+        self.select_by_index(0)
+
+    def select_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def count(self):
         wd = self.app.wd
