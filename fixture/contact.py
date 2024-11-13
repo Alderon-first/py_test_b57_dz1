@@ -24,6 +24,7 @@ class ContactHelper:
         # submit group form
         wd.find_element_by_xpath("//div[@id='content']/form/input[20]").click()
         self.return_to_home_page()
+        self.contact_cache = None
 
     def fill_contact_form(self, contact):
         # fill group form
@@ -48,6 +49,7 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         # удалить первую группу
         wd.find_element_by_xpath("/html/body/div/div[4]/form[2]/div[2]/input").click()
+        self.contact_cache = None
 
     def update_first(self, contact):
         wd = self.app.wd
@@ -59,21 +61,24 @@ class ContactHelper:
         # submit contact update
         wd.find_element_by_xpath("//*[@id='content']/form[1]/input[21]").click()
         self.return_to_home_page()
+        self.contact_cache = None
 
     def count(self):
         wd = self.app.wd
         self.open_to_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
         wd = self.app.wd
         self.open_to_home_page()
-        contscts = []
+        self.contact_cache = []
         for element in wd.find_elements_by_name("entry"):
             lastname = element.find_elements_by_css_selector("td")[1].text
             firstname = element.find_elements_by_css_selector("td")[2].text
             id = element.find_element_by_name("selected[]").get_attribute("value")
-            contscts.append(Contact(first_name=firstname, last_name=lastname, id=id))
-        return list(contscts)
+            self.contact_cache.append(Contact(first_name=firstname, last_name=lastname, id=id))
+        return list(self.contact_cache)
 
 

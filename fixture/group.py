@@ -16,6 +16,8 @@ class GroupHelper:
         # submit group form
         wd.find_element_by_name("submit").click()
         self.return_to_groups_page()
+        # сбросить кеш - он стал невалидным, потому, что список существующих групп изменился
+        self.group_cache = None
 
     def open_groups_page(self):
         wd = self.app.wd
@@ -35,6 +37,8 @@ class GroupHelper:
         # submit del
         wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
+        # сбросить кеш - он стал невалидным, потому, что список существующих групп изменился
+        self.group_cache = None
 
     def update_first(self, group):
         wd = self.app.wd
@@ -47,6 +51,8 @@ class GroupHelper:
         # submit group update
         wd.find_element_by_name("update").click()
         self.return_to_groups_page()
+        # сбросить кеш - он стал невалидным, потому, что список существующих групп изменился
+        self.group_cache = None
 
     def fill_group_form(self, group):
         self.up_field_value("group_name", group.name)
@@ -54,6 +60,7 @@ class GroupHelper:
         self.up_field_value("group_footer", group.footer)
 
     def up_field_value(self, field_name, text):
+        # метод, описывающий замену значения в форме создания/редактирования группы
         wd = self.app.wd
         if text is not None:
             wd.find_element_by_name(field_name).click()
@@ -65,17 +72,23 @@ class GroupHelper:
         wd.find_element_by_name("selected[]").click()
 
     def count(self):
+        # посчитать, сколько групп на странице
         wd = self.app.wd
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    group_cache = None
+
     def get_group_list(self):
-        wd = self.app.wd
-        self.open_groups_page()
-        groups = []
-        for element in wd.find_elements_by_css_selector("span.group"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            groups.append(Group(name=text, id=id))
-        return list(groups)
+        # если group_cache не содержит списка, то создать список
+        if self.group_cache is None:
+            wd = self.app.wd
+            self.open_groups_page()
+            self.group_cache = []
+            for element in wd.find_elements_by_css_selector("span.group"):
+                text = element.text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.group_cache.append(Group(name=text, id=id))
+        # вернуть значение group_cache
+        return list(self.group_cache)
 

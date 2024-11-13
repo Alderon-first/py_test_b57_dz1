@@ -6,8 +6,10 @@ def test_add_group(app):
     old_groups = app.group.get_group_list()
     group = Group(name="test_g", header="head", footer="footer")
     app.group.create(group)
+    # сравниваем длинну старого списка с количеством групп на странице
+    assert len(old_groups)+1 == app.group.count()
+    # если предыдущая проверка успешна - загружаем новый список
     new_groups = app.group.get_group_list()
-    assert len(old_groups)+1 == len(new_groups)
     # добавить группу в старый список
     old_groups.append(group)
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
