@@ -6,7 +6,7 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
-    def open_to_home_page(self):
+    def open_home_page(self):
         wd = self.app.wd
         if not (wd.current_url.endswith("addressbook/") and len(wd.find_elements_by_name("add")) > 0):
             wd.find_element_by_link_text("home").click()
@@ -18,6 +18,7 @@ class ContactHelper:
 
     def create(self, contact):
         wd = self.app.wd
+        self.open_home_page()
         # init group creation
         wd.find_element_by_link_text("add new").click()
         self.fill_contact_form(contact)
@@ -45,10 +46,12 @@ class ContactHelper:
 
     def dell_first(self):
         wd = self.app.wd
+        self.open_home_page()
         self.dell_by_index(0)
 
     def dell_by_index(self, index):
         wd = self.app.wd
+        self.open_home_page()
         # выбрать index
         self.select_by_index(index)
         # удалить первую группу
@@ -56,11 +59,13 @@ class ContactHelper:
         self.contact_cache = None
 
     def update_first(self, contact):
+        self.open_home_page()
         wd = self.app.wd
         self.select_by_index(0, contact)
 
     def update_by_index(self, index, contact):
         wd = self.app.wd
+        self.open_home_page()
         # изменить выбранную
         self.open_by_index(index)
         self.fill_contact_form(contact)
@@ -83,14 +88,14 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
-        self.open_to_home_page()
+        self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
     contact_cache = None
 
     def get_contact_list(self):
         wd = self.app.wd
-        self.open_to_home_page()
+        self.open_home_page()
         self.contact_cache = []
         for element in wd.find_elements_by_name("entry"):
             lastname = element.find_elements_by_css_selector("td")[1].text
