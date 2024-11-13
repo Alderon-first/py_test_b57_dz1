@@ -53,6 +53,7 @@ class GroupHelper:
         wd = self.app.wd
         self.open_groups_page()
         self.select_by_index(index)
+        wd.find_element_by_name("edit").click()
         # fill group form
         self.fill_group_form(group)
         # submit group update
