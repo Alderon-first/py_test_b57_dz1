@@ -2,12 +2,15 @@ from sys import maxsize
 
 
 class Contact:
-    #класс Contact - это конструктов объекта "контакт"
-    def __init__(self, first_name=None, last_name=None, address=None, phone_m=None, email=None, id=None):
+    # класс Contact - это конструктов объекта "контакт"
+    def __init__(self, first_name=None, last_name=None, address=None, phone_m=None, phone_home=None, phone_work=None, phone_second=None, email=None, id=None):
         self.first_name = first_name
         self.last_name = last_name
         self.address = address
         self.phone_m = phone_m
+        self.phone_home = phone_home
+        self.phone_work = phone_work
+        self.phone_second = phone_second
         self.email = email
         self.id = id
 
@@ -23,7 +26,7 @@ class Contact:
         # id сравнивается без учета None
 
     def id_or_max(self):
-        # определение функции определения числовного значения id контакта, если id отсутствует.
+        # определение функции определения числового значения id контакта, если id отсутствует.
         # для целей сортировки контактов в списке: определение положения группы в списке. контакт без id будет считаться
         # контактом с самым большим числовым значением id
         if self.id:

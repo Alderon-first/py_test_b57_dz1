@@ -23,8 +23,12 @@ class SessionHelper:
         self.login(username, password)
 
     def is_logged_in_as(self, username):
+        return self.get_logget_user() == username
+
+    def get_logget_user(self):
+        # получает из браузера имя пользователя в формате (username). отрезаем скобки
         wd = self.app.wd
-        return wd.find_element_by_xpath("//*[@id='top']/form/b").text == "("+username+")"
+        return  wd.find_element_by_xpath("//*[@id='top']/form/b").text[1:-1]
 
     def is_logged_in(self):
         # ссылок с текстом Logout больше 0
