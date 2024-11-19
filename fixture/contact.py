@@ -109,9 +109,13 @@ class ContactHelper:
                 cells = element.find_elements_by_tag_name("td")
                 lastname = cells[1].text
                 firstname = cells[2].text
+                address = cells[3].text
+                all_emails = cells[4].text
                 id = cells[0].find_element_by_tag_name("input").get_attribute("value")
-                all_phone = cells[5].text.splitlines()
-                self.contact_cache.append(Contact(first_name=firstname, last_name=lastname, phone_home=all_phone[0], phone_m=all_phone[1], phone_work=all_phone[2], id=id))
+                all_phones = cells[5].text
+                self.contact_cache.append(Contact(first_name=firstname, last_name=lastname,
+                                                  id=id, all_phones_from_home_page=all_phones, address=address,
+                                                  all_emails_from_home_page=all_emails))
         return list(self.contact_cache)
 
     def get_contact_info_from_edit_page(self, index):
@@ -123,14 +127,24 @@ class ContactHelper:
         phone_home = wd.find_element_by_name("home").get_attribute("value")
         phone_work = wd.find_element_by_name("work").get_attribute("value")
         phone_m = wd.find_element_by_name("mobile").get_attribute("value")
-        phone_second = wd.find_element_by_name("phone2").get_attribute("value")
-        return Contact(first_name=firstname, last_name=lastname, phone_m=phone_m, phone_home=phone_home, phone_work=phone_work, id=id)
+        # phone_second = wd.find_element_by_name("phone2").get_attribute("value")
+        address = wd.find_element_by_name("address").text.strip()
+        email = wd.find_element_by_name("email").get_attribute('value')
+        email2 = wd.find_element_by_name("email2").get_attribute('value')
+        email3 = wd.find_element_by_name("email3").get_attribute('value')
+        return Contact(first_name=firstname, last_name=lastname,  id=id,
+                       phone_m=phone_m, phone_home=phone_home, phone_work=phone_work,
+                       address=address,
+                       email=email, email2=email2, email3=email3)
+        # здесь нет phone2!!!!! - не могу создать -> не могу найти на странице просмотра
 
     def get_contact_from_view_page(self, index):
             wd = self.app.wd
             self.open_wiev_page_by_index(index)
             text = wd.find_element_by_id("content").text
-            mobile = re.search("M: (.*)", text).group(1)
             home = re.search("H: (.*)", text).group(1)
+            mobile = re.search("M: (.*)", text).group(1)
             work = re.search("W: (.*)", text).group(1)
-            return Contact(phone_m=mobile, phone_home=home, phone_work=work)
+            # phone2 = re.search("P: (.*)", text).group(1)
+            return Contact(phone_home=home, phone_m=mobile, phone_work=work)
+            # здесь нет phone2!!!!! - не могу создать -> не могу найти на странице просмотра
