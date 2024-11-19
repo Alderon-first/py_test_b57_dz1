@@ -1,5 +1,4 @@
 from selenium import webdriver
-# from selenium.webdriver.chrome.webdriver import WebDriver - для хрома
 from selenium.webdriver.firefox.options import Options
 from fixture.sesion import SessionHelper
 from fixture.group import GroupHelper
@@ -8,15 +7,22 @@ from fixture.contact import ContactHelper
 
 class Application:
     # класс Application предназначен для создания сессии и методов взаимодействия с ней
-    def __init__(self):
-        # self.wd = WebDriver() - для хрома
-        options = Options()
-        options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
-        self.wd = webdriver.Firefox(executable_path=r'C:\Windows\System32\geckodriver.exe', options=options)
+    def __init__(self, browser, base_url):
+        if browser == "firefox":
+            options = Options()
+            options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
+            self.wd = webdriver.Firefox(executable_path=r'C:\Windows\System32\geckodriver.exe', options=options)
+        elif browser == "chrome":
+            self.wb = webdriver.Chrome()
+        elif browser == "edge":
+            self.wb = webdriver.Edge()
+        else:
+            raise ValueError("Unrecognized browzer %s" % browser)
         self.wd.implicitly_wait(1)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
+        self.base_url = base_url
 
     def is_valid(self):
         # сессия валидна: проверяем, что браузер еще существует, проверяя наличие урла
@@ -28,7 +34,7 @@ class Application:
 
     def open_home_page(self):
         wd = self.wd
-        wd.get("http://localhost/addressbook/")
+        wd.get(self.base_url)
 
     def destroy(self):
         self.wd.quit()
