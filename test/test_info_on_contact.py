@@ -43,13 +43,13 @@ def merge_phones_like_on_home_page(contact):
     # оставшиеся элементы склеиваются с разделителем \n
     # здесь нет phone2!!!!! - не могу создать -> не могу найти на странице просмотра
     return "\n".join(filter(lambda x: x != "",
-                            map(lambda x: clear(x), filter(lambda x: x is not None,
+                            map(lambda x: clear(x),
+                                filter(lambda x: x is not None,
                                                            [contact.phone_home, contact.phone_m, contact.phone_work]))))
 
 
 def merge_email_like_on_home_page(contact):
-    return "\n".join(filter(lambda x: x != "",
-                            map(lambda x: clear(x), filter(lambda x: x is not None,
-                                                           [contact.email, contact.email2, contact.email3]))))
+    return "\n".join(filter(lambda x: x != "", filter(lambda x: x is not None,
+                                                      [contact.email, contact.email2, contact.email3])))
 
 
