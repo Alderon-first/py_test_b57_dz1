@@ -1,6 +1,7 @@
 from fixture.application import Application
 import pytest
 import json
+import jsonpickle
 import os.path
 import importlib
 
@@ -45,7 +46,17 @@ def pytest_generate_tests(metafunc):
         if fixture.startswith("data_"):
             testdata = load_from_module(fixture[5:])
             metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
+        elif fixture.startswith("json_"):
+            testdata = load_from_json(fixture[5:])
+            metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
 
 
 def load_from_module(module):
     return importlib.import_module("data.%s" % module).testdata
+
+
+def load_from_json(file):
+    parent = os.path.join(os.path.dirname(__file__),
+                          os.pardir)  # ищу путь к файлу и поднимаюсь к родительской директории (но путь не универсален для разных ОС)
+    with open( os.path.join(os.path.abspath(parent), "data/%s.json" % file)) as f: # os.path.abspath(parent) преобразует путь так, чтобы он склеился правильным образом
+        return jsonpickle.decode(f.read())
