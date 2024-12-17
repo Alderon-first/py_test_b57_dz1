@@ -13,9 +13,9 @@ class Application:
             options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
             self.wd = webdriver.Firefox(executable_path=r'C:\Windows\System32\geckodriver.exe', options=options)
         elif browser == "chrome":
-            self.wb = webdriver.Chrome()
+            self.wd = webdriver.Chrome()
         elif browser == "edge":
-            self.wb = webdriver.Edge()
+            self.wd = webdriver.Edge()
         else:
             raise ValueError("Unrecognized browzer %s" % browser)
         self.wd.implicitly_wait(1)
