@@ -4,27 +4,44 @@ import json
 import jsonpickle
 import os.path
 import importlib
+from fixture.db import DbFixture
 
 fixture = None
 target = None
 
 
-@pytest.fixture
-def app(request):
-    global fixture
+def load_config(file):
     global target
-    browser = request.config.getoption("--browser")
     if target is None:
         parent = os.path.join(os.path.dirname(__file__), os.pardir) # ищу путь к файлу и поднимаюсь к родительской директории (но путь не универсален для разных ОС)
         # print(parent)
-        config_file = os.path.join(os.path.abspath(parent), request.config.getoption("--target")) # os.path.abspath(parent) преобразует путь так, чтобы он склеился правильным образом
+        config_file = os.path.join(os.path.abspath(parent), file) # os.path.abspath(parent) преобразует путь так, чтобы он склеился правильным образом
         # print(config_file)
         with open(config_file) as f:
             target = json.load(f)
+        return target
+
+
+@pytest.fixture
+def app(request):
+    global fixture
+    browser = request.config.getoption("--browser")
+    web_config = load_config(request.config.getoption("--target"))["web"]
     if fixture is None or not fixture.is_valid():
-        fixture = Application(browser=browser, base_url=target["baseUrl"])
-    fixture.session.ensure_login(username=target["username"], password=target["password"])
+        fixture = Application(browser=browser, base_url=web_config["baseUrl"])
+    fixture.session.ensure_login(username=web_config["username"], password=web_config["password"])
     return fixture
+
+
+@pytest.fixture(scope="session")
+def db(request):
+    db_config = load_config(request.config.getoption("--target"))["db"]
+    dbfixture = DbFixture(host=db_config["host"], name=db_config["name"], user=db_config["user"],
+                          password=db_config["password"] )
+    def fin():
+        dbfixture.destroy()
+    request.addfinalizer(fin)
+    return dbfixture
 
 
 @pytest.fixture(scope="session", autouse=True)
