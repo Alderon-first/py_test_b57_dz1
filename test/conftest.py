@@ -13,20 +13,19 @@ target = None
 def load_config(file):
     global target
     if target is None:
-        #parent = os.path.join(os.path.dirname(__file__), os.pardir) # ищу путь к файлу и поднимаюсь к родительской директории (но путь не универсален для разных ОС)
-        #print(parent)
-        config_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), file) # os.path.abspath(parent) преобразует путь так, чтобы он склеился правильным образом
+        config_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), file) # # ищу путь к файлу и поднимаюсь к родительской директории (но путь не универсален для разных ОС) затем os.path.abspath(parent) преобразует путь так, чтобы он склеился правильным образом
         print(config_file)
         with open(config_file) as f:
             target = json.load(f)
             print(target)
-        return target
+    return target
 
 
 @pytest.fixture
 def app(request):
     global fixture
     browser = request.config.getoption("--browser")
+    print(target)
     web_config = load_config(request.config.getoption("--target"))["web"]
     print(web_config)
     if fixture is None or not fixture.is_valid():
